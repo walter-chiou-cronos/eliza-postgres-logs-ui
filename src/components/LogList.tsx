@@ -12,6 +12,13 @@ const fetchLogs = async () => {
   return res.json();
 }
 
+type Message = {
+  content: {
+    source: string,
+    text: string,
+  }
+}
+
 type Response = {
   action: string,
   text: string,
@@ -23,12 +30,7 @@ type Log = {
   roomId: string,
   body: {
     context: string,
-    message: {
-      content: {
-        source: string,
-        text: string,
-      }
-    },
+    message: Message,
     response: Response
   }
 }
@@ -51,6 +53,23 @@ const formatContext = (text = '') => {
 
   return chunks.join(``)
 }
+
+const MessageItem: React.FC<Message> = ({ content }) => {
+  return (
+    <Box>
+      <h1>Message</h1>
+      <div>
+        <h2>Text</h2>
+        <p>{content?.text}</p>
+      </div>
+      <div>
+        <h2>Source</h2>
+        <pre>{content.source}</pre>
+      </div>
+    </Box>
+  )
+}
+
 
 const ResponseItem: React.FC<Response> = ({ action, text, user }) => {
   return (
@@ -94,6 +113,7 @@ const LogItem: React.FC<Log> = memo(({ body }) => {
           '& em': { color: "colorPalette.700", fontWeight: 'bold', }
         }}
       >
+        <MessageItem {...body.message} />
         <ResponseItem {...body.response} />
         <h1>Context</h1>
         <Box dangerouslySetInnerHTML={{ __html: html }}></Box>

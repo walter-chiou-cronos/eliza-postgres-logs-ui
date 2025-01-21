@@ -1,5 +1,5 @@
 {
-  "name": "eliza-postgres-debugger-ui",
+  "name": "eliza-postgres-logs-ui",
   "version": "0.1.0",
   "private": true,
   "scripts": {
